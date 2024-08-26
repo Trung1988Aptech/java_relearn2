@@ -1,0 +1,19 @@
+package org.example;
+
+public class Thread1 extends Thread {
+    private Data data;
+    private Thread2 thread2;
+
+    public Thread1(Data data, Thread2 thread2) {
+        this.data = data;
+        this.thread2 = thread2;
+    }
+
+    public void run(){
+        String[] dataArray = data.getData();
+        for (String items : dataArray){
+            String upperCaseItems = items.toUpperCase();
+            thread2.setData(upperCaseItems);
+        }
+    }
+}
