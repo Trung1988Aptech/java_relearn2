@@ -1,0 +1,67 @@
+package org.example;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentTest {
+    public static void main(String args[]) throws IOException {
+        List<Student> studentList = new ArrayList<>();
+        Student student = new Student();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        for (int i=0; i<5; i++){
+            System.out.println("Enter rollnumber: ");
+            String rollNumber;
+            while (true){
+                rollNumber =  bufferedReader.readLine();
+                if (student.isValidRollNumber(rollNumber)){
+                    break;
+                }else {
+                    System.out.println("Invalid rollnumber!");
+                }
+                System.out.println("Enter student name: ");
+                String name = bufferedReader.readLine();
+                System.out.println("Enter student address: ");
+                String address = bufferedReader.readLine();
+                System.out.println("Enter student age: ");
+                int age = Integer.parseInt(bufferedReader.readLine());
+                studentList.add(new Student(rollNumber, name, address, age));
+
+            }
+            try (PrintWriter printWriter = new PrintWriter(new FileOutputStream("student.dat"))) {
+                for (Student student1 : studentList){
+                    printWriter.println(student1);
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        List<Student> readStudent = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("student.dat"))) {
+            String line;
+            while ((line = reader.readLine()) != null){
+                String[] parts = line.split(", ");
+                String rollnumber = parts[0].substring(12, parts[0].length());
+                String name = parts[1].substring(6, parts[1].length());
+                String address = parts[2].substring(8, parts[2].length());
+                int age = Integer.parseInt(parts[3].substring(5, parts[3].length()));
+                readStudent.add(new Student(rollnumber, name, address, age));
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("Student list: ");
+        for (Student student1 : readStudent){
+            System.out.println(student1);
+        }
+
+        System.out.println("Student with age less than 18: ");
+        for (Student student1 : readStudent){
+            if (student1.getAge() < 18){
+                System.out.println(student1);
+            }
+        }
+    }
+}
