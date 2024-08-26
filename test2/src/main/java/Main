@@ -1,0 +1,109 @@
+package org.example;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
+// then press Enter. You can now see whitespace characters in your code.
+public class Main {
+    public static void main(String[] args) throws IOException {
+        // Press Alt+Enter with your caret at the highlighted text to see how
+        // IntelliJ IDEA suggests fixing it.
+        List<Opportunity> opportunityList = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
+        for (int i = 1; i <= 5; i++) {
+
+            // Press Shift+F9 to start debugging your code. We have set one breakpoint
+            // for you, but you can always add more by pressing Ctrl+F8.
+            System.out.println("Enter Id: ");
+            String id = reader.readLine();
+
+            System.out.println("Enter job title: ");
+            String jobTitle = reader.readLine();
+            while (jobTitle.length() < 10){
+                System.out.println("Job title must be at least 10 characters. Please enter again: ");
+                jobTitle = reader.readLine();
+            }
+
+            System.out.println("Enter salary: ");
+            List<String> expectedSalary = new ArrayList<>();
+            String salary = reader.readLine();
+            while(Integer.parseInt(salary) < 20){
+                System.out.println("Expected Salary must be greater than 20. Enter again:");
+                salary = reader.readLine();
+            }
+            expectedSalary.add(salary);
+
+            System.out.println("Enter skills");
+            List<String> skills = new ArrayList<>();
+            String[] skillsArray = reader.readLine().split(", ");
+            for (String skill : skillsArray){
+                skills.add(skill);
+            }
+
+            System.out.println("Enter educational: ");
+            List<String> educationals = new ArrayList<>();
+            String[] educationalArray = reader.readLine().split(", ");
+            for (String educational : educationalArray){
+                educationals.add(educational);
+            }
+
+            Opportunity opportunity = new Opportunity(id, jobTitle , expectedSalary, skills, educationals);
+            opportunityList.add(opportunity);
+
+        }
+
+        saveOpportunitiesToFile(opportunityList,"opportunities.dat");
+
+        List<Opportunity> opportunities = readOpportunitiesFromFile("opportunities.dat");
+
+        displayOppoturnities(opportunities);
+
+        System.out.println("Enter job title to search: ");
+        String searchJobTitle = reader.readLine();
+        List<Opportunity> foundOpportunity = findOppoturnitiesByJobTitle(searchJobTitle, opportunities);
+        if (foundOpportunity.isEmpty()){
+            System.out.println("Not found !");
+        }else {
+            displayOppoturnities(foundOpportunity);
+        }
+
+    }
+
+    private static void saveOpportunitiesToFile(List<Opportunity> opportunities, String filename){
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(filename))) {
+            objectOutputStream.writeObject(opportunities);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static List<Opportunity> readOpportunitiesFromFile(String filename){
+        List<Opportunity> opportunities = new ArrayList<>();
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(filename))) {
+            opportunities = (List<Opportunity>) objectInputStream.readObject();
+        }catch (IOException  | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return opportunities;
+    }
+
+    private static void displayOppoturnities(List<Opportunity> opportunities){
+        for (Opportunity opportunity : opportunities){
+            System.out.println(opportunity);
+        }
+    }
+
+    private static List<Opportunity> findOppoturnitiesByJobTitle(String jobTitle, List<Opportunity> opportunities){
+        List<Opportunity> opportunityList = new ArrayList<>();
+        for (Opportunity opportunity : opportunityList){
+            if (opportunity.getJobTitle().equals(jobTitle)){
+                opportunities.add(opportunity);
+            }
+        }
+        return opportunityList;
+    }
+}
