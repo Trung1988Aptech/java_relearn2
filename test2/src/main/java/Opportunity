@@ -1,0 +1,70 @@
+package org.example;
+
+import java.util.List;
+
+public class Opportunity {
+    private String Id;
+    private String jobTitle;
+    private List<String> expectedSalary;
+    private List<String> skills;
+    private List<String> educational;
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public List<String> getExpectedSalary() {
+        return expectedSalary;
+    }
+
+    public void setExpectedSalary(List<String> expectedSalary) {
+        this.expectedSalary = expectedSalary;
+    }
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
+    }
+
+    public List<String> getEducational() {
+        return educational;
+    }
+
+    public void setEducational(List<String> educational) {
+        this.educational = educational;
+    }
+
+    public Opportunity(String id, String jobTitle, List<String> expectedSalary, List<String> skills, List<String> educational) {
+        Id = id;
+        this.jobTitle = jobTitle;
+        this.expectedSalary = expectedSalary;
+        this.skills = skills;
+        this.educational = educational;
+    }
+
+    @Override
+    public String toString() {
+        return "Opportunity{" +
+                "Id='" + Id + '\'' +
+                ", jobTitle='" + jobTitle + '\'' +
+                ", expectedSalary=" + expectedSalary +
+                ", skills=" + skills +
+                ", educational=" + educational +
+                '}';
+    }
+}
