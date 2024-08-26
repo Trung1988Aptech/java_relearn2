@@ -1,0 +1,54 @@
+package org.example;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+public class DayOfWeekendConverter {
+    private static Map<String, String> dayMap = new HashMap<>();
+
+    static {
+        dayMap.put("Moday", "Thứ 2");
+        dayMap.put("Tuesday", "Thứ 3");
+        dayMap.put("Wednesday", "Thứ 4");
+        dayMap.put("Thursday", "Thứ 5");
+        dayMap.put("Friday", "Thứ 6");
+        dayMap.put("Saturday", "Thứ 7");
+        dayMap.put("Sunday", "Chủ nhật");
+    }
+
+    public static void main(String[] args) {
+        Thread thread1 = new Thread(() -> {
+           try {
+               Thread.sleep(1000);
+               String randomDay = getRandomDay();
+               System.out.println("Random day in English: " + randomDay);
+               synchronized (dayMap){
+                   String vietnameseDay = dayMap.get(randomDay);
+                   System.out.println("Random day in Vietnamese: " + vietnameseDay);
+               }
+           } catch (InterruptedException e) {
+               throw new RuntimeException(e);
+           }
+        });
+
+        Thread thread2 = new Thread(() -> {
+            synchronized (dayMap){
+                String randomDay = getRandomDay();
+                String vietnameseDay = dayMap.get(randomDay);
+                System.out.println("Random day in Vietnamese: " + vietnameseDay);
+            }
+        });
+
+        thread1.start();
+        thread2.start();
+    }
+
+    private static String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+
+    private static String getRandomDay(){
+        Random random = new Random();
+        int index = random.nextInt(days.length);
+        return days[index];
+    }
+}
