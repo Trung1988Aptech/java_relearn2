@@ -1,0 +1,12 @@
+package org.example;
+
+public class Test {
+    public static void main(String args[]){
+        Data data = new Data();
+        Thread2 thread2 = new Thread2();
+        Thread1 thread1 = new Thread1(data, thread2);
+
+        thread1.start();
+        thread2.start();
+    }
+}
